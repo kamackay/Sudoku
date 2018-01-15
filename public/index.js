@@ -37,7 +37,7 @@ function verifyBoard() {
 	// Remove all errors from last check
 	for (var x = 0; x < DIM; x++) {
 		for (var y = 0; y < DIM; y++) {
-			$("#cell-" + x * DIM + y).removeClass("error");
+			$("#cell-" + (x * DIM + y)).removeClass("error");
 		}
 	}
 
