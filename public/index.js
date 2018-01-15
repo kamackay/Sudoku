@@ -33,17 +33,23 @@ $(document).ready(() => {
 
 function verifyBoard() {
 	const startDate = new Date();
+
+	// Remove all errors from last check
+	for (var x = 0; x < DIM; x++) {
+		for (var y = 0; y < DIM; y++) {
+			$("#cell-" + x * DIM + y).removeClass("error");
+		}
+	}
+
 	// Rows
 	for (var x = 0; x < DIM; x++) {
 		var row = [];
 		for (var y = 0; y < DIM; y++) {
 			var index = x * DIM + y;
 			var $el = $("#cell-" + index);
-			$el.removeClass("error");
 			var value = parseInt($el.val());
 			const matchIdx = $.inArray(value, row);
 			if (matchIdx !== -1) {
-				console.log("ERROR");
 				$el.addClass("error");
 				var otherElId = x * DIM + matchIdx;
 				$("#cell-" + otherElId).addClass("error");
@@ -57,11 +63,9 @@ function verifyBoard() {
 		for (var y = 0; y < DIM; y++) {
 			var index = y * DIM + x;
 			var $el = $("#cell-" + index);
-			$el.removeClass("error");
 			var value = parseInt($el.val());
 			const matchIdx = $.inArray(value, row);
 			if (matchIdx !== -1) {
-				console.log("ERROR");
 				$el.addClass("error");
 				var otherElId = matchIdx * DIM + x;
 				$("#cell-" + otherElId).addClass("error");
