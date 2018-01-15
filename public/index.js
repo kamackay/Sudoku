@@ -17,17 +17,28 @@ $(document).ready(() => {
 
 	$.each($(".tableD"), (idx, element) => {
 		$(element).append(
-			$(
-				"<table align='center' class='subTable'><tbody><tr><td class='space'/><td class='space'/><td class='space'/></tr><tr><td class='space'/><td class='space'/><td class='space'/></tr><tr><td class='space'/><td class='space'/><td class='space'/></tr></tbody></table>"
-			)
+			$("<table align='center' class='subTable'><tbody><tr><td class='space'/><td class='space'/><td class='space'/></tr><tr><td class='space'/><td class='space'/><td class='space'/></tr><tr><td class='space'/><td class='space'/><td class='space'/></tr></tbody></table>")
 		);
 	});
 
 	$.each($("td.space"), (idx, element) => {
 		var $element = $(element);
 		if (!elHeight) elHeight = $element.height() * .5;
-		element.id = "space" + idx;
-		element.innerText = idx;
+		$element.append("<input type='text' class='spaceInput' maxlength='1' id='space" +idx + "' />")
 		$element.css({ "font-size": elHeight + "px" });
+	});
+
+	$.get("https://afternoon-mountain-94217.herokuapp.com/sudoku/", (data) => {
+		var board = data.sudokuBoard;
+		console.log(board);
+		for (var x = 0; x < board.length; x++) {
+			var row = board[x];
+			for (var y = 0; y < row.length; y++) {
+				var index = x * board.length + y;
+				if (row[y] != 0) {
+					$("#space" + index).val(row[y]);
+				}
+			}
+		}
 	});
 });
