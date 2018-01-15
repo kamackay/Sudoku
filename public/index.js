@@ -21,6 +21,7 @@ $(document).ready(() => {
 					$el.addClass("unselectable");
 				}
 				$el.on("change paste keyup", verifyBoard);
+				$el.keydown(keyHandler);
 				$el.attr("maxlength", 1);
 			}
 		}
@@ -79,4 +80,31 @@ function verifyBoard() {
 	var seconds = (new Date().getTime() - startDate.getTime()) / 1000;
 
 	console.log("Check Done in " + seconds + " sec");
+}
+
+const keyHandler = function (e) {
+	// Allow: backspace, delete, tab, escape, enter and .
+	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+		 // Allow: Ctrl+A, Command+A
+		(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true))) {
+			 // let it happen, don't do anything
+			 return;
+	}
+	else if ((e.keyCode >= 36 && e.keyCode <= 40)){
+		switch(e.keyCode) {
+			case 37:
+				// Left
+				break;
+			case 38:
+				// Up
+				break;
+			case 39:
+				break;
+		}
+		console.log(e.keyCode);
+	}
+	// Ensure that it is a number and stop the keypress
+	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+		e.preventDefault();
+	}
 }
