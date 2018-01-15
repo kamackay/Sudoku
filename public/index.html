@@ -85,6 +85,13 @@
       -ms-user-select: none; /* IE10+/Edge */
       user-select: none; /* Standard */
     }
+
+    input.error {
+      background-color:red;
+    }
+    input:disabled.error{
+      background-color: #880000;
+    }
   </style>
 
   <!-- SCRIPTS -->
@@ -101,7 +108,8 @@
   </noscript>
   <div id="root" class="container">
     <h1>Sudoku</h1>
-      <table id="grid" align="center">
+    <div id="loading"><img src="./img/loading.gif" /></div>
+      <table id="grid" align="center" style="display:none;">
         <tr>
           <td><input id="cell-0"  type="text"></td>
           <td><input id="cell-1"  type="text"></td>
