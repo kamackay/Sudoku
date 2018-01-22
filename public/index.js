@@ -21,15 +21,15 @@ const subSquares = [
 $(document).ready(() => {
 	tableBody = $("#tableBody");
 	tableRows = [];
-	$.get("https://afternoon-mountain-94217.herokuapp.com/sudoku/", data => {
-		var board = data.sudokuBoard;
+	$.get("./api/easy", data => {
+		var board = data.board;
 		console.log(board);
 		for (var x = 0; x < board.length; x++) {
 			var row = board[x];
 			for (var y = 0; y < row.length; y++) {
 				var index = x * board.length + y;
 				var $el = $("#cell-" + index);
-				if (row[y] != 0) {
+				if (row[y] != 0 && row[y] != null) {
 					$el.val(row[y]);
 					$el.attr("disabled", true);
 					$el.addClass("unselectable");
