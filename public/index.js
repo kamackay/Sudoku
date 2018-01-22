@@ -2,18 +2,20 @@ var tableBody;
 var tableRows;
 var elHeight = undefined;
 
+window.boardValid = true;
+
 const DIM = 9;
 
 const subSquares = [
-	[0, 1, 2, 27, 28, 29, 54, 55, 56], 
-	[3, 4, 5, 30, 31, 32, 57, 58, 59], 
-	[6, 7, 8, 33, 34, 35, 60, 61, 62], 
-	[9, 10, 11, 36, 37, 38, 63, 64, 65], 
-	[12, 13, 14, 39, 40, 41, 66, 67, 68], 
-	[15, 16, 17, 42, 43, 44, 69, 70, 71], 
-	[18, 19, 20, 45, 46, 47, 72, 73, 74], 
-	[21, 22, 23, 48, 49, 50, 75, 76, 77], 
-	[24, 25, 26, 51, 52, 53, 78, 79, 80]
+	[0, 1, 2, 9, 10, 11, 18, 19, 20], 
+	[3, 4, 5, 12, 13, 14, 21, 22, 23], 
+	[6, 7, 8, 15, 16, 17, 24, 25, 26], 
+	[27, 28, 29, 36, 37, 38, 45, 46, 47], 
+	[30, 31, 32, 39, 40, 41, 48, 49, 50], 
+	[33, 34, 35, 42, 43, 44, 51, 52, 53], 
+	[54, 55, 56, 63, 64, 65, 72, 73, 74], 
+	[57, 58, 59, 66, 67, 68, 75, 76, 77], 
+	[60, 61, 62, 69, 70, 71, 78, 79, 80]
 ];
 
 $(document).ready(() => {
@@ -40,12 +42,14 @@ $(document).ready(() => {
 
 		$("#loading").hide();
 		$("#grid").fadeIn(500);
+		verifyBoard();
 	});
 	// window.setInterval(verifyBoard, 1000);
 });
 
 function verifyBoard() {
 	const startDate = new Date();
+	setBoardValid(true);
 
 	// Remove all errors from last check
 	for (var x = 0; x < DIM; x++) {
@@ -66,6 +70,7 @@ function verifyBoard() {
 				$el.addClass("error");
 				var otherElId = x * DIM + matchIdx;
 				$("#cell-" + otherElId).addClass("error");
+				setBoardValid(false);
 			}
 			row.push(value);
 		}
@@ -82,6 +87,7 @@ function verifyBoard() {
 				$el.addClass("error");
 				var otherElId = matchIdx * DIM + x;
 				$("#cell-" + otherElId).addClass("error");
+				setBoardValid(false);
 			}
 			row.push(value);
 		}
@@ -89,8 +95,29 @@ function verifyBoard() {
 
 	// Squares
 	subSquares.forEach(square => {
-
+		var values = [];
+		for (var x = 0; x < square.length; x++) {
+			var index = square[x];
+			var $el = $("#cell-" + index);
+			var value = parseInt($el.val());
+			if (!isNaN(value)) {
+				const matchIdx = $.inArray(value, values);
+				if (matchIdx !== -1) {
+					$el.addClass("error");
+					var otherElId = square[matchIdx];
+					$("#cell-" + otherElId).addClass("error");
+					setBoardValid(false);
+				}
+			}
+			values.push(value);
+		}
 	});
+
+	if (!window.boardValid) {
+		$("#messages").html("Errors on Board").addClass("error");
+	} else {
+		$("#messages").html("You can do it!").removeClass("error");
+	}
 
 	var seconds = (new Date().getTime() - startDate.getTime()) / 1000;
 
@@ -99,7 +126,7 @@ function verifyBoard() {
 
 const keyHandler = function (e) {
 	// Allow: backspace, delete, tab, escape, enter and .
-	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 123, 116]) !== -1 ||
 		 // Allow: Ctrl+A, Command+A
 		(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true))) {
 			 // let it happen, don't do anything
@@ -158,8 +185,8 @@ const keyHandler = function (e) {
 				return;
 
 		}
-		console.log(e.keyCode);
 	}
+	console.log("Keypress code: " + e.keyCode);
 	// Ensure that it is a number and stop the keypress
 	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
 		e.preventDefault();
@@ -172,4 +199,8 @@ function getId(el) {
 	} else {
 		return parseInt(el.id.substring(5));
 	}
+}
+
+function setBoardValid(valid) {
+	window.boardValid = valid === true;
 }
