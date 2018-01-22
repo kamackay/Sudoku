@@ -90,21 +90,71 @@ const keyHandler = function (e) {
 			 // let it happen, don't do anything
 			 return;
 	}
-	else if ((e.keyCode >= 36 && e.keyCode <= 40)){
+	else if ((e.keyCode >= 36 && e.keyCode <= 40)) {
+		const id = getId($(e.target));
 		switch(e.keyCode) {
 			case 37:
 				// Left
-				break;
+				console.log("Left Press on ID " + id);
+				var x = id;
+				while (x >= 0) {
+					x--;
+					var $el = $("#cell-" + x);
+					if ($el.attr("disabled") === undefined) {
+						$el.focus();
+						break;
+					}
+				}
+				return;
 			case 38:
-				// Up
-				break;
+				var x = id;
+				while (x >= 0) {
+					x -= DIM;
+					var $el = $("#cell-" + x);
+					if ($el.attr("disabled") === undefined) {
+						$el.focus();
+						break;
+					}
+				}
+				return;
 			case 39:
-				break;
+				// Right
+				var x = id;
+				while (x <= DIM * DIM) {
+					x++;
+					var $el = $("#cell-" + x);
+					if ($el.attr("disabled") === undefined) {
+						$el.focus();
+						break;
+					}
+				}
+				return;
+			case 40:
+				// Down
+				var x = id;
+				while (x <= DIM * DIM) {
+					x += DIM;
+					var $el = $("#cell-" + x);
+					if ($el.attr("disabled") === undefined) {
+						$el.focus();
+						break;
+					}
+				}
+				return;
+
 		}
 		console.log(e.keyCode);
 	}
 	// Ensure that it is a number and stop the keypress
 	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
 		e.preventDefault();
+	}
+}
+
+function getId(el) {
+	if (el instanceof jQuery) {
+		return parseInt(el.attr('id').substring(5));
+	} else {
+		return parseInt(el.id.substring(5));
 	}
 }
