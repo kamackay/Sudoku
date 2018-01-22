@@ -4,6 +4,18 @@ var elHeight = undefined;
 
 const DIM = 9;
 
+const subSquares = [
+	[0, 1, 2, 27, 28, 29, 54, 55, 56], 
+	[3, 4, 5, 30, 31, 32, 57, 58, 59], 
+	[6, 7, 8, 33, 34, 35, 60, 61, 62], 
+	[9, 10, 11, 36, 37, 38, 63, 64, 65], 
+	[12, 13, 14, 39, 40, 41, 66, 67, 68], 
+	[15, 16, 17, 42, 43, 44, 69, 70, 71], 
+	[18, 19, 20, 45, 46, 47, 72, 73, 74], 
+	[21, 22, 23, 48, 49, 50, 75, 76, 77], 
+	[24, 25, 26, 51, 52, 53, 78, 79, 80]
+];
+
 $(document).ready(() => {
 	tableBody = $("#tableBody");
 	tableRows = [];
@@ -76,6 +88,9 @@ function verifyBoard() {
 	}
 
 	// Squares
+	subSquares.forEach(square => {
+
+	});
 
 	var seconds = (new Date().getTime() - startDate.getTime()) / 1000;
 
