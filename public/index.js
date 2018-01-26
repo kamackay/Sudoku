@@ -7,14 +7,14 @@ window.boardValid = true;
 const DIM = 9;
 
 const subSquares = [
-	[0, 1, 2, 9, 10, 11, 18, 19, 20], 
-	[3, 4, 5, 12, 13, 14, 21, 22, 23], 
-	[6, 7, 8, 15, 16, 17, 24, 25, 26], 
-	[27, 28, 29, 36, 37, 38, 45, 46, 47], 
-	[30, 31, 32, 39, 40, 41, 48, 49, 50], 
-	[33, 34, 35, 42, 43, 44, 51, 52, 53], 
-	[54, 55, 56, 63, 64, 65, 72, 73, 74], 
-	[57, 58, 59, 66, 67, 68, 75, 76, 77], 
+	[0, 1, 2, 9, 10, 11, 18, 19, 20],
+	[3, 4, 5, 12, 13, 14, 21, 22, 23],
+	[6, 7, 8, 15, 16, 17, 24, 25, 26],
+	[27, 28, 29, 36, 37, 38, 45, 46, 47],
+	[30, 31, 32, 39, 40, 41, 48, 49, 50],
+	[33, 34, 35, 42, 43, 44, 51, 52, 53],
+	[54, 55, 56, 63, 64, 65, 72, 73, 74],
+	[57, 58, 59, 66, 67, 68, 75, 76, 77],
 	[60, 61, 62, 69, 70, 71, 78, 79, 80]
 ];
 
@@ -114,9 +114,28 @@ function verifyBoard() {
 	});
 
 	if (!window.boardValid) {
-		$("#messages").html("Errors on Board").addClass("error");
+		$("#messages")
+			.html("Errors on Board")
+			.addClass("error");
 	} else {
-		$("#messages").html("You can do it!").removeClass("error");
+		$("#messages")
+			.html("")
+			.removeClass("error");
+	}
+
+	// Count empty spaces
+	var emptySpaces = 0;
+	for (var index = 0; index < DIM * DIM; index++) {
+		if (isNaN(parseInt($("#cell-" + index).val()))) {
+			emptySpaces++;
+		}
+	}
+
+	if (emptySpaces === 0) {
+		$("#messages")
+			.html("You Won!")
+			.removeClass("error")
+			.addClass("success");
 	}
 
 	var seconds = (new Date().getTime() - startDate.getTime()) / 1000;
@@ -124,17 +143,16 @@ function verifyBoard() {
 	console.log("Check Done in " + seconds + " sec");
 }
 
-const keyHandler = function (e) {
+const keyHandler = function(e) {
 	// Allow: backspace, delete, tab, escape, enter and .
-	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 123, 116]) !== -1 ||
-		 // Allow: Ctrl+A, Command+A
-		(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true))) {
-			 // let it happen, don't do anything
-			 return;
-	}
-	else if ((e.keyCode >= 36 && e.keyCode <= 40)) {
+	if (
+		$.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 123, 116]) !== -1 ||
+		(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true))
+	) {
+		return;
+	} else if (e.keyCode >= 36 && e.keyCode <= 40) {
 		const id = getId($(e.target));
-		switch(e.keyCode) {
+		switch (e.keyCode) {
 			case 37:
 				// Left
 				console.log("Left Press on ID " + id);
@@ -183,19 +201,23 @@ const keyHandler = function (e) {
 					}
 				}
 				return;
-
 		}
 	}
 	console.log("Keypress code: " + e.keyCode);
 	// Ensure that it is a number and stop the keypress
-	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+	if (
+		(e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+		(e.keyCode < 96 || e.keyCode > 105)
+	) {
 		e.preventDefault();
+	} else {
+		$(e.target).val("");
 	}
-}
+};
 
 function getId(el) {
 	if (el instanceof jQuery) {
-		return parseInt(el.attr('id').substring(5));
+		return parseInt(el.attr("id").substring(5));
 	} else {
 		return parseInt(el.id.substring(5));
 	}
