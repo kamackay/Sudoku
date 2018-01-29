@@ -131,7 +131,7 @@ function verifyBoard() {
 		}
 	}
 
-	if (emptySpaces === 0) {
+	if (emptySpaces === 0 && window.boardValid) {
 		$("#messages")
 			.html("You Won!")
 			.removeClass("error")
