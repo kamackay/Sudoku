@@ -1,24 +1,34 @@
 const express = require("express");
 const server = express();
 const cors = require("cors");
-const easy = require("./data/easyBoards").easyBoards;
-const medium = require("./data/mediumBoards").mediumBoards;
-const hard = require("./data/hardBoards").hardBoards;
 const router = express.Router();
+const generator = require("./sudoku.js");
 server.use(express.static(__dirname + "/public"));
 server.use(cors());
 
 router.get("/:difficulty", (req, res) => {
-	if (req.params.difficulty === "easy") {
-		res.json(easy[Math.floor(Math.random() * easy.length)]);
-	} else if (req.params.difficulty === "medium") {
-		res.json(medium[Math.floor(Math.random() * medium.length)]);
-	} else if (req.params.difficulty === "hard") {
-		res.json(hard[Math.floor(Math.random() * hard.length)]);
-	} else {
-		res.json({ error: "Request is not valid." });
+	const boardText = generator.generate(req.params.difficulty);
+	const board = [
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0]
+	];
+	for (var x = 0; x < 9 * 9; x++) {
+		const boardVal = boardText.charAt(x);
+		if (boardVal !== ".") {
+			board[Math.floor(x / 9)][x % 9] = parseInt(boardVal);
+		}
 	}
+	console.log(board);
+	res.json({ board: board });
 });
 server.use("/api", router);
-
-server.listen(process.env.PORT || 5555);
+const port = process.env.PORT || 5555;
+console.log("Listening on port: " + port);
+server.listen(port);
