@@ -27,15 +27,15 @@
   </noscript>
   <div id="root" class="container">
     <h1>Sudoku</h1>
-    <div class="row well">
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" data-toggle="button" class="btn btn-lg btn-secondary active" aria-pressed="true">Easy</button>
-            <button type="button" data-toggle="button" class="btn btn-lg btn-secondary" aria-pressed="false">Medium</button>
-            <button type="button" data-toggle="button" class="btn btn-lg btn-secondary" aria-pressed="false">Hard</button>
+    <div class="row">
+        <div id="diffButtons" class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" data-toggle="button" class="btn btn-lg btn-secondary active" onclick="changeDifficulty(event)">Easy</button>
+            <button type="button" data-toggle="button" class="btn btn-lg btn-secondary" onclick="changeDifficulty(event)">Medium</button>
+            <button type="button" data-toggle="button" class="btn btn-lg btn-secondary" onclick="changeDifficulty(event)">Hard</button>
         </div>
     </div>
     <div id="loading"><img src="./img/loading.gif" /></div>
-      <table id="grid" align="center" style="display:none;">
+      <table id="grid" align="center" style="display:none;" class="well">
         <tr>
           <td><input id="cell-0"  type="text"></td>
           <td><input id="cell-1"  type="text"></td>

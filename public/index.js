@@ -18,10 +18,22 @@ const subSquares = [
 	[60, 61, 62, 69, 70, 71, 78, 79, 80]
 ];
 
-$(document).ready(() => {
+window.changeDifficulty = function (event) {
+	$("#diffButtons").find("button").each(function(index) {
+		const $this = $(this);
+		$this.removeClass("active");
+		setTimeout(() => $this.blur(), 5);
+	});
+	const t = $(event.target);
+	setTimeout(() => t.addClass("active"), 1);
+	setBoard(t.html().toLowerCase());
+};
+
+window.setBoard = function (difficulty) {
+	console.log("Set Difficulty to " + difficulty);
 	tableBody = $("#tableBody");
 	tableRows = [];
-	$.get("./api/medium", data => {
+	$.get("./api/" + difficulty, data => {
 		var board = data.board;
 		console.log(board);
 		for (var x = 0; x < board.length; x++) {
@@ -33,6 +45,10 @@ $(document).ready(() => {
 					$el.val(row[y]);
 					$el.attr("disabled", true);
 					$el.addClass("unselectable");
+				} else {
+					$el.val("");
+					$el.attr("disabled", false);
+					$el.removeClass("unselectable");
 				}
 				$el.on("change paste keyup", verifyBoard);
 				$el.keydown(keyHandler);
@@ -44,6 +60,10 @@ $(document).ready(() => {
 		$("#grid").fadeIn(500);
 		verifyBoard();
 	});
+}
+
+$(document).ready(() => {
+	setBoard("medium");
 	// window.setInterval(verifyBoard, 1000);
 });
 
