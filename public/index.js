@@ -55,10 +55,9 @@ window.setBoard = function (difficulty) {
 				$el.attr("maxlength", 1);
 			}
 		}
-
+		verifyBoard();
 		$("#loading").hide();
 		$("#grid").fadeIn(500);
-		verifyBoard();
 	});
 }
 
@@ -70,6 +69,7 @@ $(document).ready(() => {
 function verifyBoard() {
 	const startDate = new Date();
 	setBoardValid(true);
+	const numsRemain = [0,0,0,0,0,0,0,0,0];
 
 	// Remove all errors from last check
 	for (var x = 0; x < DIM; x++) {
@@ -120,6 +120,7 @@ function verifyBoard() {
 			var index = square[x];
 			var $el = $("#cell-" + index);
 			var value = parseInt($el.val());
+			numsRemain[value - 1]++;
 			if (!isNaN(value)) {
 				const matchIdx = $.inArray(value, values);
 				if (matchIdx !== -1) {
@@ -132,6 +133,11 @@ function verifyBoard() {
 			values.push(value);
 		}
 	});
+
+	for (var x = 0; x < 9; x++) {
+		const el = $("#remaining" + (x + 1));
+		el.html(9 - numsRemain[x])
+	}
 
 	if (!window.boardValid) {
 		$("#messages")
