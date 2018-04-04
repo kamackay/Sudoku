@@ -21,7 +21,7 @@ const subSquares = [
 $(document).ready(() => {
 	tableBody = $("#tableBody");
 	tableRows = [];
-	$.get("./api/easy", data => {
+	$.get("./api/medium", data => {
 		var board = data.board;
 		console.log(board);
 		for (var x = 0; x < board.length; x++) {
