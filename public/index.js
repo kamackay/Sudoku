@@ -18,18 +18,20 @@ const subSquares = [
 	[60, 61, 62, 69, 70, 71, 78, 79, 80]
 ];
 
-window.changeDifficulty = function (event) {
-	$("#diffButtons").find("button").each(function(index) {
-		const $this = $(this);
-		$this.removeClass("active");
-		setTimeout(() => $this.blur(), 5);
-	});
+window.changeDifficulty = function(event) {
+	$("#diffButtons")
+		.find("button")
+		.each(function(index) {
+			const $this = $(this);
+			$this.removeClass("active");
+			setTimeout(() => $this.blur(), 5);
+		});
 	const t = $(event.target);
 	setTimeout(() => t.addClass("active"), 1);
 	setBoard(t.html().toLowerCase());
 };
 
-window.setBoard = function (difficulty) {
+window.setBoard = function(difficulty) {
 	console.log("Set Difficulty to " + difficulty);
 	tableBody = $("#tableBody");
 	tableRows = [];
@@ -55,12 +57,14 @@ window.setBoard = function (difficulty) {
 				$el.attr("maxlength", 1);
 			}
 		}
-		verifyBoard(() => setTimeout(() => {
-			$("#loading").hide();
-			$("#grid").fadeIn(500);
-		}, 500));
+		verifyBoard(() =>
+			setTimeout(() => {
+				$("#loading").hide();
+				$("#grid").fadeIn(500);
+			}, 500)
+		);
 	});
-}
+};
 
 $(document).ready(() => {
 	setBoard("medium");
@@ -70,7 +74,7 @@ $(document).ready(() => {
 function verifyBoard(callback) {
 	const startDate = new Date();
 	setBoardValid(true);
-	const numsRemain = [0,0,0,0,0,0,0,0,0];
+	const numsRemain = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 	// Remove all errors from last check
 	for (var x = 0; x < DIM; x++) {
@@ -137,7 +141,7 @@ function verifyBoard(callback) {
 
 	for (var x = 0; x < 9; x++) {
 		const el = $("#remaining" + (x + 1));
-		el.html(9 - numsRemain[x])
+		el.html(9 - numsRemain[x]);
 	}
 
 	if (!window.boardValid) {
@@ -171,7 +175,7 @@ function verifyBoard(callback) {
 	if (callback) {
 		try {
 			callback();
-		} catch(e) {}
+		} catch (e) {}
 	}
 }
 
