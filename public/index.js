@@ -55,9 +55,10 @@ window.setBoard = function (difficulty) {
 				$el.attr("maxlength", 1);
 			}
 		}
-		verifyBoard();
-		$("#loading").hide();
-		$("#grid").fadeIn(500);
+		verifyBoard(() => setTimeout(() => {
+			$("#loading").hide();
+			$("#grid").fadeIn(500);
+		}, 500));
 	});
 }
 
@@ -66,7 +67,7 @@ $(document).ready(() => {
 	// window.setInterval(verifyBoard, 1000);
 });
 
-function verifyBoard() {
+function verifyBoard(callback) {
 	const startDate = new Date();
 	setBoardValid(true);
 	const numsRemain = [0,0,0,0,0,0,0,0,0];
@@ -167,6 +168,11 @@ function verifyBoard() {
 	var seconds = (new Date().getTime() - startDate.getTime()) / 1000;
 
 	console.log("Check Done in " + seconds + " sec");
+	if (callback) {
+		try {
+			callback();
+		} catch(e) {}
+	}
 }
 
 const keyHandler = function(e) {
